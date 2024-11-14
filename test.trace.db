@@ -1,0 +1,252 @@
+2024-11-13 20:35:30 database: flush
+org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 2 [2.1.212/5]" [50000-212]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:395)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:124)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:3349)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:590)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:466)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:4118)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	at org.h2.engine.Database.<init>(Database.java:324)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:681)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:252)
+	at org.example.Database.main(Database.java:9)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 2 [2.1.212/5]" [50000-212]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	... 18 more
+Caused by: org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 2 [2.1.212/5]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
+	at org.h2.mvstore.MVStore.getUnsupportedWriteFormatException(MVStore.java:1065)
+	at org.h2.mvstore.MVStore.readStoreHeader(MVStore.java:883)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:460)
+	... 12 more
+2024-11-13 20:35:30 database: opening D:/javaDev_hw6/test
+org.h2.message.DbException: General error: "The write format 1 is smaller than the supported format 2 [2.1.212/5]" [50000-212]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.convertMVStoreException(Store.java:170)
+	at org.h2.mvstore.db.Store.<init>(Store.java:144)
+	at org.h2.engine.Database.<init>(Database.java:324)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:681)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:252)
+	at org.example.Database.main(Database.java:9)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "The write format 1 is smaller than the supported format 2 [2.1.212/5]" [50000-212]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	... 13 more
+Caused by: org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 2 [2.1.212/5]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
+	at org.h2.mvstore.MVStore.getUnsupportedWriteFormatException(MVStore.java:1065)
+	at org.h2.mvstore.MVStore.readStoreHeader(MVStore.java:883)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:460)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:4118)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	... 10 more
+2024-11-14 15:17:32 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "TASK[*] 1
+
+         
+CREATE TABLE WORKER (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+         
+CREATE TABLE CLIENT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+          
+CREATE TABLE PROJECT (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES CLIENT(ID)
+);
+
+                 
+CREATE TABLE PROJECT_WORKER (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+);"; expected "TRUNCATE"; SQL statement:
+Task 1
+
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+-- client
+CREATE TABLE client (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+-- project
+CREATE TABLE project (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- project_worker
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+); [42001-200]
+2024-11-14 15:19:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "TASK[*] 1
+
+         
+CREATE TABLE WORKER (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+         
+CREATE TABLE CLIENT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+          
+CREATE TABLE PROJECT (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES CLIENT(ID)
+);
+
+                 
+CREATE TABLE PROJECT_WORKER (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+);"; expected "TRUNCATE"; SQL statement:
+Task 1
+
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+-- client
+CREATE TABLE client (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+-- project
+CREATE TABLE project (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- project_worker
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+); [42001-200]
+2024-11-14 15:36:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "TASK[*] 1
+
+         
+CREATE TABLE WORKER (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+         
+CREATE TABLE CLIENT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+          
+CREATE TABLE PROJECT (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES CLIENT(ID)
+);
+
+                 
+CREATE TABLE PROJECT_WORKER (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+);"; expected "TRUNCATE"; SQL statement:
+Task 1
+
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+-- client
+CREATE TABLE client (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+-- project
+CREATE TABLE project (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- project_worker
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+); [42001-200]
