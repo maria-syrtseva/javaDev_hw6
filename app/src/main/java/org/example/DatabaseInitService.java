@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class DatabaseInitService {
     public static void main(String[] args) {
         // Шлях до SQL файлу для ініціалізації БД
-        String sqlFile = "sql/init_db.sql";
+        String sqlFile = "D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\init_db.sql";
 
         try {
             // Читаємо файл

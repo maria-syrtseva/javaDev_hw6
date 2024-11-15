@@ -9,10 +9,10 @@ import java.sql.Statement;
 
 public class DatabasePopulateService {
     public static void main(String[] args) {
-        String sqlFile = "sql/populate_db.sql";  // Шлях до SQL файлу для заповнення бд
+        String sqlFile = "D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\populate_db.sql";  // Шлях до SQL файлу для заповнення бд
 
         try {
-            // Читаємо SQL файл
+            // Читаємо SQL
             String sql = new String(Files.readAllBytes(Paths.get(sqlFile)));
 
             // Підключення до БД через клас Database

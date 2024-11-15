@@ -250,3 +250,552 @@ CREATE TABLE project_worker (
     WORKER_ID INT,
     PRIMARY KEY (PROJECT_ID, WORKER_ID)
 ); [42001-200]
+2024-11-15 14:48:31 database: flush
+org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 3 [2.2.220/5]" [50000-220]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:407)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:122)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:1547)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:371)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2036)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	at org.h2.engine.Database.<init>(Database.java:324)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:681)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:252)
+	at org.example.Database.<init>(Database.java:16)
+	at org.example.Database.getInstance(Database.java:22)
+	at org.example.Database.main(Database.java:36)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 3 [2.2.220/5]" [50000-220]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 20 more
+Caused by: org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 3 [2.2.220/5]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.FileStore.getUnsupportedWriteFormatException(FileStore.java:944)
+	at org.h2.mvstore.FileStore.processCommonHeaderAttributes(FileStore.java:547)
+	at org.h2.mvstore.RandomAccessStore.readStoreHeader(RandomAccessStore.java:227)
+	at org.h2.mvstore.FileStore.start(FileStore.java:917)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:289)
+	... 14 more
+2024-11-15 14:48:31 database: opening D:/javaDev_hw6/test
+org.h2.message.DbException: Unsupported database file version or invalid file header in file "D:/javaDev_hw6/test.mv.db" [90048-220]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.convertMVStoreException(Store.java:158)
+	at org.h2.mvstore.db.Store.<init>(Store.java:142)
+	at org.h2.engine.Database.<init>(Database.java:324)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:681)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:252)
+	at org.example.Database.<init>(Database.java:16)
+	at org.example.Database.getInstance(Database.java:22)
+	at org.example.Database.main(Database.java:36)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: Unsupported database file version or invalid file header in file "D:/javaDev_hw6/test.mv.db" [90048-220]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 15 more
+Caused by: org.h2.mvstore.MVStoreException: The write format 1 is smaller than the supported format 3 [2.2.220/5]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.FileStore.getUnsupportedWriteFormatException(FileStore.java:944)
+	at org.h2.mvstore.FileStore.processCommonHeaderAttributes(FileStore.java:547)
+	at org.h2.mvstore.RandomAccessStore.readStoreHeader(RandomAccessStore.java:227)
+	at org.h2.mvstore.FileStore.start(FileStore.java:917)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:289)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2036)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	... 12 more
+2024-11-15 14:58:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "TASK[*] 1
+
+         
+CREATE TABLE WORKER (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+         
+CREATE TABLE CLIENT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+          
+CREATE TABLE PROJECT (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES CLIENT(ID)
+);
+
+                 
+CREATE TABLE PROJECT_WORKER (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+);"; expected "TRUNCATE"; SQL statement:
+Task 1
+
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); 
+
+-- client
+CREATE TABLE client (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+-- project
+CREATE TABLE project (
+    ID INT PRIMARY KEY AUTO_INCREMENT
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- project_worker
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+); [42001-200]
+2024-11-15 15:18:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "TASK[*] 1
+         
+CREATE TABLE WORKER (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+);
+
+         
+CREATE TABLE CLIENT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+          
+CREATE TABLE PROJECT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES CLIENT(ID)
+);
+
+                 
+CREATE TABLE PROJECT_WORKER (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+);"; expected "TRUNCATE"; SQL statement:
+Task 1
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+);
+
+-- client
+CREATE TABLE client (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+-- project
+CREATE TABLE project (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- project_worker
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+); [42001-200]
+2024-11-15 15:18:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "TASK[*] 1
+         
+CREATE TABLE WORKER (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+);
+
+         
+CREATE TABLE CLIENT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+          
+CREATE TABLE PROJECT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES CLIENT(ID)
+);
+
+                 
+CREATE TABLE PROJECT_WORKER (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+);"; expected "TRUNCATE"; SQL statement:
+Task 1
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+);
+
+-- client
+CREATE TABLE client (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+-- project
+CREATE TABLE project (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- project_worker
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+); [42001-200]
+2024-11-15 15:22:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "TASK[*] 1
+         
+CREATE TABLE WORKER (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+);
+
+         
+CREATE TABLE CLIENT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+          
+CREATE TABLE PROJECT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES CLIENT(ID)
+);
+
+                 
+CREATE TABLE PROJECT_WORKER (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+);"; expected "TRUNCATE"; SQL statement:
+Task 1
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+);
+
+-- client
+CREATE TABLE client (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100)
+);
+
+-- project
+CREATE TABLE project (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    CLIENT_ID INT,
+    START_DATE DATE,
+    FINISH_DATE DATE,
+    FOREIGN KEY (CLIENT_ID) REFERENCES client(ID)
+);
+
+-- project_worker
+CREATE TABLE project_worker (
+    PROJECT_ID INT,
+    WORKER_ID INT,
+    PRIMARY KEY (PROJECT_ID, WORKER_ID)
+); [42001-200]
+2024-11-15 15:31:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "NAME" not found; SQL statement:
+
+
+-- projects
+INSERT INTO project (CLIENT_ID, START_DATE, FINISH_DATE, NAME) VALUES
+(1, '2023-01-01', '2023-06-01', 'Project 1'),
+(1, '2023-02-15', '2023-12-15', 'Project 2'),
+(2, '2023-03-10', '2024-01-10', 'Project 3'),
+(3, '2022-07-20', '2023-09-20', 'Project 4'),
+(4, '2022-05-01', '2023-08-01', 'Project 5'),
+(4, '2023-02-01', '2023-11-01', 'Project 6'),
+(5, '2023-05-05', '2024-02-05', 'Project 7'),
+(1, '2023-07-15', '2024-03-15', 'Project 8'),
+(3, '2023-08-20', '2024-06-20', 'Project 9'),
+(2, '2022-12-10', '2023-12-10', 'Project 10');
+
+-- project_worker
+INSERT INTO project_worker (PROJECT_ID, WORKER_ID) VALUES
+(1, 1), (1, 3), (1, 5),
+(2, 2), (2, 4),
+(3, 6),
+(4, 7), (4, 8), (4, 9),
+(5, 10), (5, 1),
+(6, 2), (6, 3), (6, 5),
+(7, 6), (7, 7),
+(8, 8), (8, 9), (8, 10),
+(9, 1), (9, 2), (9, 3),
+(10, 4), (10, 5); [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.table.Table.getColumn(Table.java:703)
+	at org.h2.command.Parser.parseColumn(Parser.java:1450)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1435)
+	at org.h2.command.Parser.parseInsertGivenTable(Parser.java:1804)
+	at org.h2.command.Parser.parseInsert(Parser.java:1749)
+	at org.h2.command.Parser.parsePrepared(Parser.java:954)
+	at org.h2.command.Parser.parse(Parser.java:843)
+	at org.h2.command.Parser.parse(Parser.java:815)
+	at org.h2.command.Parser.prepareCommand(Parser.java:738)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.command.CommandList.executeRemaining(CommandList.java:54)
+	at org.h2.command.CommandList.update(CommandList.java:67)
+	at org.h2.command.Command.executeUpdate(Command.java:251)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:228)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:201)
+	at org.example.DatabasePopulateService.main(DatabasePopulateService.java:23)
+2024-11-15 15:47:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "NAME" not found; SQL statement:
+
+
+-- projects
+INSERT INTO project (CLIENT_ID, START_DATE, FINISH_DATE, NAME) VALUES
+(1, '2023-01-01', '2023-06-01', 'Project 1'),
+(1, '2023-02-15', '2023-12-15', 'Project 2'),
+(2, '2023-03-10', '2024-01-10', 'Project 3'),
+(3, '2022-07-20', '2023-09-20', 'Project 4'),
+(4, '2022-05-01', '2023-08-01', 'Project 5'),
+(4, '2023-02-01', '2023-11-01', 'Project 6'),
+(5, '2023-05-05', '2024-02-05', 'Project 7'),
+(1, '2023-07-15', '2024-03-15', 'Project 8'),
+(3, '2023-08-20', '2024-06-20', 'Project 9'),
+(2, '2022-12-10', '2023-12-10', 'Project 10');
+
+-- project_worker
+INSERT INTO project_worker (PROJECT_ID, WORKER_ID) VALUES
+(1, 1), (1, 3), (1, 5),
+(2, 2), (2, 4),
+(3, 6),
+(4, 7), (4, 8), (4, 9),
+(5, 10), (5, 1),
+(6, 2), (6, 3), (6, 5),
+(7, 6), (7, 7),
+(8, 8), (8, 9), (8, 10),
+(9, 1), (9, 2), (9, 3),
+(10, 4), (10, 5); [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.table.Table.getColumn(Table.java:703)
+	at org.h2.command.Parser.parseColumn(Parser.java:1450)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1435)
+	at org.h2.command.Parser.parseInsertGivenTable(Parser.java:1804)
+	at org.h2.command.Parser.parseInsert(Parser.java:1749)
+	at org.h2.command.Parser.parsePrepared(Parser.java:954)
+	at org.h2.command.Parser.parse(Parser.java:843)
+	at org.h2.command.Parser.parse(Parser.java:815)
+	at org.h2.command.Parser.prepareCommand(Parser.java:738)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.command.CommandList.executeRemaining(CommandList.java:54)
+	at org.h2.command.CommandList.update(CommandList.java:67)
+	at org.h2.command.Command.executeUpdate(Command.java:251)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:228)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:201)
+	at org.example.DatabasePopulateService.main(DatabasePopulateService.java:23)
+2024-11-15 16:54:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL ENUM('Trainee', 'Junior', 'Middle', 'Senior') NOT NULL,
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-15 16:54:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-15 16:54:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-15 16:54:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-15 16:55:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-15 16:55:32 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-15 16:57:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column count does not match; SQL statement:
+INSERT INTO client (NAME) VALUES
+('Client A'),
+('Client B'),
+('Client C'),
+('Client D'),
+('Client E'); [21002-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.message.DbException.get(DbException.java:170)
+	at org.h2.command.dml.Insert.prepare(Insert.java:319)
+	at org.h2.command.CommandList.executeRemaining(CommandList.java:46)
+	at org.h2.command.CommandList.update(CommandList.java:67)
+	at org.h2.command.Command.executeUpdate(Command.java:251)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:228)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:201)
+	at org.example.DatabasePopulateService.main(DatabasePopulateService.java:23)
+2024-11-15 17:00:15 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column count does not match; SQL statement:
+INSERT INTO client (NAME) VALUES
+('Client A'),
+('Client B'),
+('Client C'),
+('Client D'),
+('Client E'); [21002-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.message.DbException.get(DbException.java:170)
+	at org.h2.command.dml.Insert.prepare(Insert.java:319)
+	at org.h2.command.CommandList.executeRemaining(CommandList.java:46)
+	at org.h2.command.CommandList.update(CommandList.java:67)
+	at org.h2.command.Command.executeUpdate(Command.java:251)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:228)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:201)
+	at org.example.DatabasePopulateService.main(DatabasePopulateService.java:23)
+2024-11-15 17:00:54 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column count does not match; SQL statement:
+INSERT INTO client (NAME) VALUES
+('Client 1'),
+('Client 2'),
+('Client 3'),
+('Client 4'),
+('Client 5'); [21002-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.message.DbException.get(DbException.java:170)
+	at org.h2.command.dml.Insert.prepare(Insert.java:319)
+	at org.h2.command.CommandList.executeRemaining(CommandList.java:46)
+	at org.h2.command.CommandList.update(CommandList.java:67)
+	at org.h2.command.Command.executeUpdate(Command.java:251)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:228)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:201)
+	at org.example.DatabasePopulateService.main(DatabasePopulateService.java:23)
+2024-11-15 17:44:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
+2024-11-15 17:50:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
+2024-11-15 17:51:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
+2024-11-15 17:56:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
+2024-11-15 17:58:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
+2024-11-15 18:01:31 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
