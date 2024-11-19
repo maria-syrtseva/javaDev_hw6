@@ -1,8 +1,8 @@
 package org.example;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,24 +10,26 @@ import java.util.List;
 public class DatabaseQueryService {
 
     // Метод для читання SQL-запиту
-    private String readSqlFromFile(String filePath) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filePath)));
+    private String readSqlFromFile(File file) throws IOException {
+        return new String(Files.readAllBytes(file.toPath()));
     }
 
     // Найбільші зарплати
     public List<WorkerSalary> findMaxSalary() {
         List<WorkerSalary> result = new ArrayList<>();
+        File file = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_max_salary_worker.sql");
         try {
-            String sql = readSqlFromFile("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_max_salary_worker.sql");
-            try (Connection conn = Database.getInstance().getConnection()) {
-                Statement stmt;
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    WorkerSalary workerSalary = new WorkerSalary();
-                    workerSalary.setName(rs.getString("NAME"));
-                    workerSalary.setSalary(rs.getDouble("SALARY"));
-                    result.add(workerSalary);
+            String sql = readSqlFromFile(file);
+            try (Connection conn = Database.getInstance().getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) { // Використання PreparedStatement
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        WorkerSalary workerSalary = new WorkerSalary();
+                        workerSalary.setName(rs.getString("NAME"));
+                        workerSalary.setSalary(rs.getDouble("SALARY"));
+                        result.add(workerSalary);
+                    }
                 }
             }
         } catch (IOException | SQLException e) {
@@ -39,17 +41,19 @@ public class DatabaseQueryService {
     // Максимальна кількість проєктів
     public List<ClientProjectCount> findMaxProjectsClient() {
         List<ClientProjectCount> result = new ArrayList<>();
+        File file = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_max_projects_client.sql");
         try {
-            String sql = readSqlFromFile("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_max_projects_client.sql");
-            try (Connection conn = Database.getInstance().getConnection()) {
-                Statement stmt;
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    ClientProjectCount client = new ClientProjectCount();
-                    client.setName(rs.getString("NAME"));
-                    client.setProjectCount(rs.getInt("PROJECT_COUNT"));
-                    result.add(client);
+            String sql = readSqlFromFile(file);
+            try (Connection conn = Database.getInstance().getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) { // Використання PreparedStatement
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        ClientProjectCount client = new ClientProjectCount();
+                        client.setName(rs.getString("NAME"));
+                        client.setProjectCount(rs.getInt("PROJECT_COUNT"));
+                        result.add(client);
+                    }
                 }
             }
         } catch (IOException | SQLException e) {
@@ -61,21 +65,20 @@ public class DatabaseQueryService {
     // Наймолодший і найстаріший працівник
     public List<WorkerAge> findYoungestAndEldestWorker() {
         List<WorkerAge> result = new ArrayList<>();
+        File file = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_youngest_and_eldest_worker.sql");
         try {
-            String sql = readSqlFromFile("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_youngest_and_eldest_worker.sql");
-            try (Connection conn = Database.getInstance().getConnection()) {
-                Statement stmt;
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    WorkerAge worker = new WorkerAge();
-                    worker.setType(rs.getString("TYPE"));
-                    worker.setName(rs.getString("NAME"));
+            String sql = readSqlFromFile(file);
+            try (Connection conn = Database.getInstance().getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) { // Використання PreparedStatement
 
-                    Date birthday = rs.getDate("BIRTHDAY");
-                    worker.setBirthday(birthday);  // Встановлюємо дату народження
-
-                    result.add(worker);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        WorkerAge worker = new WorkerAge();
+                        worker.setType(rs.getString("TYPE"));
+                        worker.setName(rs.getString("NAME"));
+                        worker.setBirthday(rs.getDate("BIRTHDAY"));
+                        result.add(worker);
+                    }
                 }
             }
         } catch (IOException | SQLException e) {
@@ -83,20 +86,23 @@ public class DatabaseQueryService {
         }
         return result;
     }
+
     // Вартість проєкту
     public List<ProjectPrice> findProjectPrice() {
         List<ProjectPrice> result = new ArrayList<>();
+        File file = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_project_price.sql");
         try {
-            String sql = readSqlFromFile("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_project_price.sql");
-            try (Connection conn = Database.getInstance().getConnection()) {
-                Statement stmt;
-                stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    ProjectPrice price = new ProjectPrice();
-                    price.setProjectName(rs.getString("Project_Name"));
-                    price.setProjectPrice(rs.getDouble("Project_Price"));
-                    result.add(price);
+            String sql = readSqlFromFile(file);
+            try (Connection conn = Database.getInstance().getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) { // Використання PreparedStatement
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        ProjectPrice price = new ProjectPrice();
+                        price.setProjectName(rs.getString("Project_Name"));
+                        price.setProjectPrice(rs.getDouble("Project_Price"));
+                        result.add(price);
+                    }
                 }
             }
         } catch (IOException | SQLException e) {

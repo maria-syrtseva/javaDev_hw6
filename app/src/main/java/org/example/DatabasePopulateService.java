@@ -1,19 +1,20 @@
 package org.example;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabasePopulateService {
     public static void main(String[] args) {
-        String sqlFile = "D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\populate_db.sql";  // Шлях до SQL файлу для заповнення бд
+        // Використання File для вказування шляху до SQL файлу
+        File sqlFile = new File("src/main/resources/sql/populate_db.sql"); // Відносний шлях до файлу
 
         try {
-            // Читаємо SQL
-            String sql = new String(Files.readAllBytes(Paths.get(sqlFile)));
+            // Читаємо SQL з файлу
+            String sql = new String(Files.readAllBytes(sqlFile.toPath())); // Перетворення File у Path
 
             // Підключення до БД через клас Database
             try (Connection connection = Database.getInstance().getConnection();
@@ -21,10 +22,10 @@ public class DatabasePopulateService {
 
                 // Виконання SQL для заповнення БД
                 statement.execute(sql);
-                System.out.println("бд успішно заповнена!");
+                System.out.println("Успіх!");
             } catch (SQLException e) {
                 e.printStackTrace();
-                System.err.println("Помилка при виконанні SQL запитів");
+                System.err.println("Помилка виконання");
             }
         } catch (IOException e) {
             e.printStackTrace();

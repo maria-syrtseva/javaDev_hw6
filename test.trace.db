@@ -799,3 +799,25 @@ org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-20
 org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
 2024-11-15 18:01:31 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
+2024-11-19 16:29:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-19 16:30:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "WORKER" already exists; SQL statement:
+-- worker
+CREATE TABLE worker (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAME VARCHAR(100) NOT NULL CHECK (CHAR_LENGTH(NAME) BETWEEN 1 AND 100),
+    BIRTHDAY DATE CHECK (YEAR(BIRTHDAY) > 1900),
+    LEVEL VARCHAR(10) NOT NULL CHECK (LEVEL IN ('Trainee', 'Junior', 'Middle', 'Senior')),
+    SALARY INT NOT NULL CHECK (SALARY BETWEEN 100 AND 100000)
+); [42101-200]
+2024-11-19 16:32:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-200]
