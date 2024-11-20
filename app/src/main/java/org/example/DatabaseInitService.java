@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class DatabaseInitService {
     public static void main(String[] args) {
         // Використання File для вказування шляху до SQL файлу
-        File sqlFile = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\init_db.sql"); // Відносний шлях до файлу
+        File sqlFile = new File("src/main/resources/sql/init_db.sql"); // Відносний шлях до файлу
 
         try {
             // Читаємо SQL з файлу

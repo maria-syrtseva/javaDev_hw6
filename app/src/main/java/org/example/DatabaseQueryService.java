@@ -41,7 +41,7 @@ public class DatabaseQueryService {
     // Максимальна кількість проєктів
     public List<ClientProjectCount> findMaxProjectsClient() {
         List<ClientProjectCount> result = new ArrayList<>();
-        File file = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_max_projects_client.sql");
+        File file = new File("src/main/resources/sql/find_max_projects_client.sql");
         try {
             String sql = readSqlFromFile(file);
             try (Connection conn = Database.getInstance().getConnection();
@@ -65,7 +65,7 @@ public class DatabaseQueryService {
     // Наймолодший і найстаріший працівник
     public List<WorkerAge> findYoungestAndEldestWorker() {
         List<WorkerAge> result = new ArrayList<>();
-        File file = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_youngest_and_eldest_worker.sql");
+        File file = new File("src/main/resources/sql/find_youngest_and_eldest_worker.sql");
         try {
             String sql = readSqlFromFile(file);
             try (Connection conn = Database.getInstance().getConnection();
@@ -90,7 +90,7 @@ public class DatabaseQueryService {
     // Вартість проєкту
     public List<ProjectPrice> findProjectPrice() {
         List<ProjectPrice> result = new ArrayList<>();
-        File file = new File("D:\\javaDev_hw6\\app\\src\\main\\resources\\sql\\find_project_price.sql");
+        File file = new File("src/main/resources/sql/find_project_price.sql");
         try {
             String sql = readSqlFromFile(file);
             try (Connection conn = Database.getInstance().getConnection();
