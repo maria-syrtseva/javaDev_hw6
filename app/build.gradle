@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+
 }
 
 repositories {
@@ -27,6 +28,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.h2database/h2
     implementation 'com.h2database:h2:1.4.200'
 
+    implementation 'org.flywaydb:flyway-core:9.22.0'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
