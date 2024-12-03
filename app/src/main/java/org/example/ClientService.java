@@ -1,49 +1,89 @@
 package org.example;
 
-import java.util.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientService {
-    private final Map<Long, Client> clientStorage = new HashMap<>();
-    private long nextId = 1; // ідентифікатор
+    private final Connection connection;
+
+    public ClientService(Connection connection) {
+        this.connection = connection;
+    }
 
     // Додавання нового клієнта, та його ідентифікатор
-    public long create(String name) {
-        if (name == null || name.trim().isEmpty() || name.length() > 100) {
-            throw new IllegalArgumentException("Ім'я не має містити більше 100 символів! Спробуйте ще раз.");
+    public long create(String name) throws SQLException {
+        String sql = "INSERT INTO clients (name) VALUES (?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, name);
+            statement.executeUpdate();
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getLong(1);
+                } else {
+                    throw new SQLException("Не вдалося отримати ID нового клієнта.");
+                }
+            }
         }
-        Client client = new Client(nextId++, name);
-        clientStorage.put(client.getId(), client);
-        return client.getId();
     }
 
     // Ім'я клієнта за ідентифікатором
-    public String getById(long id) {
-        Client client = clientStorage.get(id);
-        if (client == null) {
-            throw new NoSuchElementException("Клієнт з ID " + id + " не знайдений.");
+    public Client getById(long id) throws SQLException {
+        String sql = "SELECT id, name FROM clients WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Client(
+                            resultSet.getLong("id"),
+                            resultSet.getString("name")
+                    );
+                } else {
+                    throw new SQLException("Клієнта з ID " + id + " не знайдено.");
+                }
+            }
         }
-        return client.getName();
     }
 
     // Нове ім'я для клієнта за ідентифікатором
-    public void setName(long id, String name) {
-        Client client = clientStorage.get(id);
-        if (client == null) {
-            throw new NoSuchElementException("Клієнт з ID " + id + " не знайдений.");
+    public void setName(long id, String name) throws SQLException {
+        String sql = "UPDATE clients SET name = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setLong(2, id);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new SQLException("Клієнта з ID " + id + " не знайдено.");
+            }
         }
-        client.setName(name);
     }
 
     // Видалення клієнта за ідентифікатором
-    public void deleteById(long id) {
-        if (!clientStorage.containsKey(id)) {
-            throw new NoSuchElementException("Клієнт з ID " + id + " не знайдений.");
+    public void deleteById(long id) throws SQLException {
+        String sql = "DELETE FROM clients WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            int rowsDeleted = statement.executeUpdate();
+            if (rowsDeleted == 0) {
+                throw new SQLException("Клієнта з ID " + id + " не знайдено.");
+            }
         }
-        clientStorage.remove(id);
     }
 
     // Повернення списку всіх клієнтів
-    public List<Client> listAll() {
-        return new ArrayList<>(clientStorage.values());
+    public List<Client> listAll() throws SQLException {
+        String sql = "SELECT id, name FROM clients";
+        List<Client> clients = new ArrayList<>();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                clients.add(new Client(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name")
+                ));
+            }
+        }
+        return clients;
     }
 }
