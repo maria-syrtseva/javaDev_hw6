@@ -2,7 +2,7 @@ package org.example;
 
 import org.flywaydb.core.Flyway;
 
-public class DatabaseMigration {
+public class MigrationFlyway {
     public static void main(String[] args) {
         Flyway flyway = Flyway.configure()
                 .dataSource("jdbc:h2:./database/testdb", "sa", "")
